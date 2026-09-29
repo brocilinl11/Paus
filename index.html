@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paus - Raksasa Laut yang Megah</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+  }
+
+  body {
+    background: linear-gradient(180deg, #001f3f 0%, #003366 50%, #0074D9 100%);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+  header {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(circle at 50% 40%, #0074D9 0%, #001f3f 70%);
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 3%),
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.08) 0%, transparent 3%),
+      radial-gradient(circle at 50% 20%, rgba(255,255,255,0.1) 0%, transparent 2%);
+    animation: bubbles 15s linear infinite;
+  }
+
+  @keyframes bubbles {
+    0% { background-position: 0 0, 0 0, 0 0; }
+    100% { background-position: 0 -1000px, 0 -800px, 0 -1200px; }
+  }
+
+  header h1 {
+    font-size: 4.5rem;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+    animation: float 3s ease-in-out infinite;
+    z-index: 2;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  header p {
+    font-size: 1.4rem;
+    max-width: 700px;
+    padding: 0 20px;
+    line-height: 1.8;
+    color: #a8dadc;
+    z-index: 2;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    font-size: 2rem;
+    animation: bounce 2s infinite;
+    z-index: 2;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+  }
+
+  /* Navigasi */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 31, 63, 0.7);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+  }
+
+  nav .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #00d4ff;
+    letter-spacing: 2px;
+  }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+  }
+
+  nav ul a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  nav ul a:hover {
+    color: #00d4ff;
+  }
+
+  nav ul a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #00d4ff;
+    transition: width 0.3s;
+  }
+
+  nav ul a:hover::after {
+    width: 100%;
+  }
+
+  /* Section umum */
+  section {
+    padding: 100px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  section h2 {
+    font-size: 2.8rem;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #00d4ff;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+  }
+
+  section h2::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #00d4ff, transparent);
+    margin: 15px auto 0;
+    border-radius: 2px;
+  }
+
+  /* Card deskripsi */
+  .deskripsi-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 20px;
+    padding: 50px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    line-height: 2;
+    font-size: 1.1rem;
+    color: #e0f7fa;
+    text-align: justify;
+  }
+
+  .deskripsi-box p {
+    margin-bottom: 20px;
+  }
+
+  .deskripsi-box strong {
+    color: #00d4ff;
+  }
+
+  /* Grid fakta */
+  .fakta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+  }
+
+  .fakta-card {
+    background: linear-gradient(135deg, rgba(0, 116, 217, 0.2), rgba(0, 31, 63, 0.5));
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+  }
+
+  .fakta-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+    border-color: #00d4ff;
+  }
+
+  .fakta-card .icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+  }
+
+  .fakta-card h3 {
+    color: #00d4ff;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+  }
+
+  .fakta-card p {
+    color: #a8dadc;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  /* Jenis paus */
+  .jenis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .jenis-card {
+    background: rgba(0, 31, 63, 0.6);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    transition: transform 0.4s, box-shadow 0.4s;
+  }
+
+  .jenis-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 20px 50px rgba(0, 212, 255, 0.3);
+  }
+
+  .jenis-card .header-card {
+    background: linear-gradient(135deg, #0074D9, #001f3f);
+    padding: 30px;
+    text-align: center;
+    font-size: 3rem;
+  }
+
+  .jenis-card .body-card {
+    padding: 25px;
+  }
+
+  .jenis-card h3 {
+    color: #00d4ff;
+    margin-bottom: 12px;
+    font-size: 1.4rem;
+  }
+
+  .jenis-card p {
+    color: #a8dadc;
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+
+  /* Footer */
+  footer {
+    background: #001428;
+    padding: 40px 20px;
+    text-align: center;
+    border-top: 1px solid rgba(0, 212, 255, 0.2);
+    color: #a8dadc;
+  }
+
+  footer p {
+    margin-bottom: 10px;
+  }
+
+  footer .heart {
+    color: #00d4ff;
+  }
+
+  /* Animasi reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease;
+  }
+
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    header h1 { font-size: 2.5rem; }
+    header p { font-size: 1.1rem; }
+    nav { padding: 15px 20px; }
+    nav ul { gap: 15px; }
+    nav ul a { font-size: 0.85rem; }
+    section { padding: 60px 20px; }
+    section h2 { font-size: 2rem; }
+    .deskripsi-box { padding: 25px; font-size: 1rem; }
+    nav .logo { font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigasi -->
+<nav>
+  <div class="logo">🐋 PAUS</div>
+  <ul>
+    <li><a href="#deskripsi">Deskripsi</a></li>
+    <li><a href="#fakta">Fakta</a></li>
+    <li><a href="#jenis">Jenis</a></li>
+  </ul>
+</nav>
+
+<!-- Header -->
+<header>
+  <h1>PAUS</h1>
+  <p>Raksasa lembut yang menguasai samudra, simbol keagungan alam bawah laut yang penuh misteri</p>
+  <div class="scroll-indicator">↓</div>
+</header>
+
+<!-- Section Deskripsi -->
+<section id="deskripsi" class="reveal">
+  <h2>Teks Deskripsi Paus</h2>
+  <div class="deskripsi-box">
+    <p><strong>Paus</strong> adalah mamalia laut terbesar yang hidup di planet Bumi. Hewan ini termasuk dalam ordo Cetacea dan menghabiskan seluruh hidupnya di lautan. Paus memiliki tubuh yang besar dan ramping, dengan kulit halus berwarna abu-abu hingga biru gelap yang sering kali ditumbuhi bercak-bercak putih atau parasit kecil di permukaannya.</p>
+
+    <p>Di bagian atas kepala paus terdapat <strong>lubang sembur (blowhole)</strong> yang berfungsi sebagai alat pernapasan. Ketika paus muncul ke permukaan laut, ia menghembuskan udara hangat melalui lubang tersebut sehingga terbentuklah semburan air yang tinggi dan indah, seperti air mancur alami di tengah lautan.</p>
+
+    <p>Paus memiliki <strong>ekor besar berbentuk sirip</strong> yang disebut fluke, digunakan untuk mendorong tubuhnya di dalam air. Sementara itu, sirip dada (flipper) di kedua sisinya membantu paus mengarahkan gerakan dan menjaga keseimbangan saat berenang. Tubuh paus dilapisi lapisan lemak tebal bernama <strong>blubber</strong> yang berfungsi menjaga suhu tubuh tetap hangat meski berada di perairan dingin.</p>
+
+    <p>Meskipun bertubuh raksasa, paus dikenal sebagai hewan yang <strong>lembut dan cerdas</strong>. Paus berkomunikasi dengan sesamanya menggunakan suara-suara khas yang merdu, yang dapat terdengar hingga jarak ratusan kilometer di dalam laut. Suara ini menjadi salah satu keajaiban alam yang paling menakjubkan.</p>
+  </div>
+</section>
+
+<!-- Section Fakta -->
+<section id="fakta" class="reveal">
+  <h2>Fakta Menakjubkan</h2>
+  <div class="fakta-grid">
+    <div class="fakta-card">
+      <div class="icon">🌊</div>
+      <h3>Mamalia Terbesar</h3>
+      <p>Paus biru adalah hewan terbesar yang pernah hidup di Bumi, panjangnya bisa mencapai 30 meter.</p>
+    </div>
+    <div class="fakta-card">
+      <div class="icon">🎵</div>
+      <h3>Suara Merdu</h3>
+      <p>Paus bungkuk dapat "bernyanyi" hingga 20 menit dengan suara yang terdengar ratusan kilometer jauhnya.</p>
+    </div>
+    <div class="fakta-card">
+      <div class="icon">💧</div>
+      <h3>Semburan Air</h3>
+      <p>Semburan air paus biru bisa mencapai ketinggian 9 meter ke udara.</p>
+    </div>
+    <div class="fakta-card">
+      <div class="icon">🧠</div>
+      <h3>Sangat Cerdas</h3>
+      <p>Otak paus sangat besar dan kompleks, membuat mereka salah satu hewan paling cerdas di laut.</p>
+    </div>
+    <div class="fakta-card">
+      <div class="icon">🍤</div>
+      <h3>Pemakan Krill</h3>
+      <p>Meski tubuhnya raksasa, paus biru hanya memakan krill kecil sebanyak 4 ton setiap hari.</p>
+    </div>
+    <div class="fakta-card">
+      <div class="icon">❤️</div>
+      <h3>Jantung Raksasa</h3>
+      <p>Jantung paus biru sebesar mobil kecil dan dapat terdengar berdetak dari jarak 3 km.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Section Jenis -->
+<section id="jenis" class="reveal">
+  <h2>Jenis-Jenis Paus</h2>
+  <div class="jenis-grid">
+    <div class="jenis-card">
+      <div class="header-card">🐋</div>
+      <div class="body-card">
+        <h3>Paus Biru</h3>
+        <p>Hewan terbesar di dunia dengan panjang hingga 30 meter. Tubuhnya berwarna biru keabu-abuan dan memakan krill sebagai makanan utamanya.</p>
+      </div>
+    </div>
+    <div class="jenis-card">
+      <div class="header-card">🐳</div>
+      <div class="body-card">
+        <h3>Paus Bungkuk</h3>
+        <p>Dikenal karena suaranya yang merdu dan lompatannya yang spektakuler ke udara. Panjang tubuhnya sekitar 15 meter.</p>
+      </div>
+    </div>
+    <div class="jenis-card">
+      <div class="header-card">🦈</div>
+      <div class="body-card">
+        <h3>Paus Sperma</h3>
+        <p>Memiliki kepala besar dan persegi. Paus ini mampu menyelam sangat dalam untuk mencari cumi-cumi raksasa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>🌊 Website Edukasi tentang Paus 🐋</p>
+  <p>Dibuat dengan <span class="heart">♥</span> untuk mencintai kehidupan laut</p>
+  <p style="margin-top: 15px; font-size: 0.85rem; opacity: 0.7;">&copy; 2025 Paus Description Website</p>
+</footer>
+
+<script>
+  // Efek reveal saat scroll
+  const reveals = document.querySelectorAll('.reveal');
+  
+  const revealOnScroll = () => {
+    reveals.forEach(el => {
+      const windowHeight = window.innerHeight;
+      const elementTop = el.getBoundingClientRect().top;
+      const revealPoint = 100;
+      
+      if (elementTop < windowHeight - revealPoint) {
+        el.classList.add('active');
+      }
+    });
+  };
+  
+  window.addEventListener('scroll', revealOnScroll);
+  window.addEventListener('load', revealOnScroll);
+
+  // Smooth scroll navigasi
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Efek parallax header
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    const scrolled = window.pageYOffset;
+    if (scrolled < window.innerHeight) {
+      header.style.transform = `translateY(${scrolled * 0.4}px)`;
+      header.style.opacity = 1 - scrolled / window.innerHeight;
+    }
+  });
+</script>
+
+</body>
+</html>
